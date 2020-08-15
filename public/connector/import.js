@@ -1,11 +1,11 @@
 $(document).ready(function(){
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-    const redirect_uri = "http://localhost:8080/connector/import.html" // replace with your redirect_uri;
-    const client_secret = "4inA-Vx8QrQoFaXsTE2cViNg"; // replace with your client secret
+    const redirect_uri = "http://localhost:8080/connector/import.html" 
+    const client_secret = "4inA-Vx8QrQoFaXsTE2cViNg"; 
     const scope = "https://www.googleapis.com/auth/drive";
     var access_token= "";
-    var client_id = "194383452071-84dleaqjqpgip40oq5k8r7m70nhr18eq.apps.googleusercontent.com";// replace it with your client id;
+    var client_id = "194383452071-84dleaqjqpgip40oq5k8r7m70nhr18eq.apps.googleusercontent.com";
     $.ajax({
         type: 'POST',
         url: "https://www.googleapis.com/oauth2/v4/token",
@@ -27,6 +27,7 @@ $(document).ready(function(){
                    request.setRequestHeader("Authorization", "Bearer" + " " + localStorage.getItem("accessToken"));
 
                },
+
                url: "https://www.googleapis.com/drive/v2/files",
                data:{
                    uploadType:"media"
@@ -44,11 +45,13 @@ $(document).ready(function(){
 					const uri = value.alternateLink;
 					var uri_dec = decodeURIComponent(uri);
 					console.log(uri_dec);
-					$('ul').append('<li class="list-group-item"> <input type="radio" name="recording" id="recording" value="' +uri_dec+ '">  '+value.title+' </li>');
-                   
-					
-					
-});
+					if(value.mimeType === "video/mp4")
+					{
+						$('ul').append('<li class="list-group-item"> <input type="radio" name="recording" id="'+key+'" value="' +uri_dec+ '">  '+value.title+' </li>');
+						console.log(uri_dec);
+					}
+						
+				    });
                },
                error: function (error) {
                    console.log(error);
